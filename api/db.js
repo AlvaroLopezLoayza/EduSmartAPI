@@ -5,5 +5,4 @@ const sql = postgres(connectionString, {
   ssl: 'require'
 });
 
-
 export default sql
