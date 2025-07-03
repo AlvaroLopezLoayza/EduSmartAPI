@@ -1,4 +1,4 @@
-import sql from './db.js';
+import sql from '././db.js';
 
 const queries = {
   'notas-por-curso': `

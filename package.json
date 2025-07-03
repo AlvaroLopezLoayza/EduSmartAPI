@@ -2,6 +2,7 @@
   "name": "my-vercel-api",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "dependencies": {
     "postgres": "^3.4.3"
   }
