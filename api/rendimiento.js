@@ -36,7 +36,7 @@ export default async function handler(req, res) {
     res.status(405).json({ error: 'Método no permitido' });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Error del servidor' });
+    res.status(500).json({ error: 'Error del servidor ' + err });
   } finally {
     await conn.end();
   }
