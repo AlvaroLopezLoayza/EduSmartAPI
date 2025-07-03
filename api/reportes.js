@@ -24,7 +24,7 @@ const queries = {
   'notas-por-trimestre': `
     SELECT t.anio, t.trimestre, ROUND(AVG(r.nota_promedio), 2) AS promedio
     FROM rendimiento r
-    JOIN tiempo t ON r.id_rendimiento = t.id_tiempo
+    JOIN tiempo t ON r.id_tiempo = t.id_tiempo
     GROUP BY t.anio, t.trimestre
     ORDER BY t.anio, t.trimestre
   `,
@@ -33,6 +33,7 @@ const queries = {
     FROM rendimiento r
     JOIN grado g ON r.id_grado = g.id_grado
     GROUP BY g.nivel
+    ORDER BY cantidad DESC
   `,
 };
 
