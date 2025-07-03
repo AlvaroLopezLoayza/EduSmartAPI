@@ -1,22 +1,30 @@
-import { getConnection } from './db.js';
+import sql from './db.js'
 
 export default async function handler(req, res) {
-  const conn = await getConnection();
   try {
     if (req.method === 'GET') {
-      const [rows] = await conn.execute('SELECT * FROM docente');
-      return res.status(200).json(rows);
+      const docentes = await sql`SELECT * FROM docente`
+      return res.status(200).json(docentes)
     }
+
     if (req.method === 'POST') {
-      const { nombres, especialidad } = req.body;
-      await conn.execute(
-        'INSERT INTO docente (nombres, especialidad) VALUES (?, ?)',
-        [nombres, especialidad]
-      );
-      return res.status(201).json({ mensaje: 'Docente registrado' });
+      let body = ''
+      for await (const chunk of req) body += chunk
+      const { nombres, especialidad } = JSON.parse(body)
+
+      if (!nombres) {
+        return res.status(400).json({ error: 'Faltan campos requeridos' })
+      }
+
+      await sql`
+        INSERT INTO docente (nombres, especialidad)
+        VALUES (${nombres}, ${especialidad})
+      `
+      return res.status(201).json({ mensaje: 'Docente registrado' })
     }
-    res.status(405).json({ error: 'Método no permitido' });
-  } finally {
-    await conn.end();
+
+    res.status(405).json({ error: 'Método no permitido' })
+  } catch (err) {
+    res.status(500).json({ error: 'Error en el servidor', detalle: err.message })
   }
 }
